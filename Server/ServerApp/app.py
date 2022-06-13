@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from starlette.responses import StreamingResponse
 from sqlalchemy.future import select
+from typing import Dict, Any
 import models
 import schemas
 import database
@@ -49,7 +50,7 @@ async def register_new_profile(profile: schemas.ProfileIn) -> models.Profiles:
 
 
 @app.get('/profile/{user_name}/{user_password}', response_model=schemas.ProfileOut)
-async def get_profile(user_name: str, user_password: str):
+async def get_profile(user_name: str, user_password: str) -> models.Profiles:
     async with database.session.begin():
         profile = await database.session.execute(
             select(models.Profiles).where(
@@ -60,11 +61,13 @@ async def get_profile(user_name: str, user_password: str):
     return profile.scalars().one_or_none()
 
 
-@app.get('/lvl-up-profile/{profile_id}', response_model=schemas.ProfileOut)
-async def lvl_up_profile(profile_id) -> models.Profiles:
+@app.get('/lvl-up-profile/{user_name}/{user_password}/', response_model=schemas.ProfileOut)
+async def lvl_up_profile(user_name: str, user_password: str) -> models.Profiles:
     async with database.session.begin():
         profile = await database.session.execute(
-            select(models.Profiles).where(models.Profiles.id == profile_id)
+            select(models.Profiles).where(
+                models.Profiles.user_name == user_name, models.Profiles.user_password == user_password
+            )
         )
         pr = profile.scalars().one_or_none()
         if pr:
