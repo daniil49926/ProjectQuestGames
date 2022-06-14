@@ -99,10 +99,11 @@ async def get_quest_images(quest_id):
     if res_quest:
         _im_path = f'Quest_images/{res_quest.file_name}.png'
 
-        with open(_im_path, 'rb') as im:
-            byte_image = base64.b64decode(im.read())
+        def _iter_file():
+            with open(_im_path, 'rb') as im:
+                yield from im
 
-        return StreamingResponse(byte_image)
+        return StreamingResponse(_iter_file(), media_type="image/png")
 
     return None
 
@@ -118,7 +119,7 @@ async def get_quest_text(quest_id):
     if res_quest:
         _que_path = f'Quest_text/{res_quest.file_name}.json'
 
-        with open(_que_path, 'r') as jf:
+        with open(_que_path, 'r', encoding='Windows-1251') as jf:
             json_file = json.load(jf)
 
         return json_file
