@@ -1,0 +1,11 @@
+{
+    "first_entry": true,
+    "user_name": null,
+    "user_mail": null,
+    "user_password": null,
+    "Scores": 0,
+    "list_of_downloaded_quests": [
+        "Вводный Квест",
+        "Капитан Кларк"
+    ]
+}
