@@ -7,7 +7,7 @@ void main() => runApp(MyFirstApp());
 class MyFirstApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //context - особый тип объекта, который будет автоматически передан в меьод сборки
+    //context - особый тип объекта, который будет автоматически передан в метод сборки
     return MaterialApp(
       theme: ThemeData(primarySwatch: Colors.lightGreen),
       home: Scaffold(
